@@ -1,5 +1,7 @@
 package com.algaworks.algafood.api.controller;
 
+import java.util.Optional;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -52,15 +54,20 @@ public class RestauranteController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Restaurante> atualizar(@PathVariable Long id, @RequestBody Restaurante restaurante) {
-		final Restaurante restauranteAtual = restauranteRepository.getOne(id);
+	public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody Restaurante restaurante) {
+		final Optional<Restaurante> restauranteAtualOpt = restauranteRepository.findById(id);
 
-		if (restauranteAtual != null) {
-			BeanUtils.copyProperties(restaurante, restauranteAtual, "id");
-			return ResponseEntity.ok(restauranteRepository.save(restauranteAtual));
+		try {
+			return restauranteAtualOpt.map(restauranteAtual -> {
+
+				BeanUtils.copyProperties(restaurante, restauranteAtual, "id");
+				restauranteAtual = restauranteService.salvar(restauranteAtual);
+				return ResponseEntity.ok(restauranteAtual);
+
+			}).orElseGet(() -> ResponseEntity.notFound().build());
+		} catch (EntidadeNaoEncontradaException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
 		}
-
-		return ResponseEntity.notFound().build();
 	}
 
 	@DeleteMapping("/{id}")
