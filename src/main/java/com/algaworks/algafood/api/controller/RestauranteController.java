@@ -1,6 +1,6 @@
 package com.algaworks.algafood.api.controller;
 
-import static com.algaworks.algafood.api.PatchUtils.changeIfPresent;
+import static com.algaworks.algafood.api.util.PatchUtils.changeIfPresent;
 
 import java.util.Optional;
 

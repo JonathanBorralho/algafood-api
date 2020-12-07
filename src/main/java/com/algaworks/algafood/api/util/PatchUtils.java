@@ -1,4 +1,4 @@
-package com.algaworks.algafood.api;
+package com.algaworks.algafood.api.util;
 
 import java.util.function.Consumer;
 
