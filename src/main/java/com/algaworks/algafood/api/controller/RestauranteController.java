@@ -38,8 +38,8 @@ public class RestauranteController {
 	private RestauranteService restauranteService;
 
 	@GetMapping
-	public Page<Restaurante> listar(Pageable pageable) {
-		return restauranteRepository.findAll(pageable);
+	public Page<Restaurante> paginar(Pageable pageable, String nome) {
+		return restauranteRepository.paginar(pageable, nome);
 	}
 
 	@GetMapping("/{id}")
