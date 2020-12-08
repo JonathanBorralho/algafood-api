@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -28,6 +29,9 @@ public class Restaurante extends BaseEntity {
 
 	@ManyToOne
 	private Cozinha cozinha;
+	
+	@Embedded
+	private Endereco endereco;
 	
 	@JsonIgnore
 	@ManyToMany
