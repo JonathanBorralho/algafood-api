@@ -25,6 +25,7 @@ import com.algaworks.algafood.api.controller.dtos.RestauranteUpdate;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
+import com.algaworks.algafood.domain.repository.filter.RestauranteFilter;
 import com.algaworks.algafood.domain.service.RestauranteService;
 
 @RestController
@@ -38,8 +39,8 @@ public class RestauranteController {
 	private RestauranteService restauranteService;
 
 	@GetMapping
-	public Page<Restaurante> paginar(Pageable pageable, String nome) {
-		return restauranteRepository.paginar(pageable, nome);
+	public Page<Restaurante> paginar(Pageable pageable, RestauranteFilter filter) {
+		return restauranteRepository.paginar(pageable, filter);
 	}
 
 	@GetMapping("/{id}")

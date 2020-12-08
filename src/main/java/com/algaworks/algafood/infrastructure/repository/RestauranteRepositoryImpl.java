@@ -12,6 +12,7 @@ import org.springframework.util.StringUtils;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import com.algaworks.algafood.domain.repository.RestauranteRepositoryQueries;
+import com.algaworks.algafood.domain.repository.filter.RestauranteFilter;
 import com.querydsl.core.BooleanBuilder;
 
 @Repository
@@ -21,11 +22,25 @@ public class RestauranteRepositoryImpl implements RestauranteRepositoryQueries {
 	private RestauranteRepository restauranteRepository;
 
 	@Override
-	public Page<Restaurante> paginar(Pageable pageable, String nome) {
+	public Page<Restaurante> paginar(Pageable pageable, RestauranteFilter filter) {
 		final BooleanBuilder builder = new BooleanBuilder();
-		if (StringUtils.hasText(nome)) {
-			builder.and(restaurante.nome.containsIgnoreCase(nome));
+		
+		if (StringUtils.hasText(filter.getNome())) {
+			builder.and(restaurante.nome.containsIgnoreCase(filter.getNome()));
 		}
+		
+		if (filter.getTaxaFreteInicial() != null) {
+			builder.and(restaurante.taxaFrete.goe(filter.getTaxaFreteInicial()));
+		}
+		
+		if (filter.getTaxaFreteFinal() != null) {
+			builder.and(restaurante.taxaFrete.loe(filter.getTaxaFreteFinal()));
+		}
+		
+		if (filter.getCozinha() != null) {
+			builder.and(restaurante.cozinha.id.eq(filter.getCozinha()));
+		}
+		
 		return restauranteRepository.findAll(builder, pageable);
 	}
 
