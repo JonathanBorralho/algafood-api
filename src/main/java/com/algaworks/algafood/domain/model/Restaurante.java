@@ -20,7 +20,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-public class Restaurante extends BaseEntity {
+public class Restaurante extends BaseEntityAuditable {
 
 	private String nome;
 

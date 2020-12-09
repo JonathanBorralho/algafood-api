@@ -2,10 +2,10 @@ insert into cozinha (nome) values ('Nordestina');
 insert into cozinha (nome) values ('Tailandesa');
 insert into cozinha (nome) values ('Indiana');
 
-insert into restaurante (nome, taxa_frete, cozinha_id) values ('Restaurante Sal e Brasa', '6.00', 1);
-insert into restaurante (nome, taxa_frete, cozinha_id) values ('Thai Gourmet', 10, 3);
-insert into restaurante (nome, taxa_frete, cozinha_id) values ('Thai Delivery', 9.50, 3);
-insert into restaurante (nome, taxa_frete, cozinha_id) values ('Tuk Tuk Comida Indiana', 15, 4);
+insert into restaurante (nome, taxa_frete, cozinha_id, data_criacao, data_atualizacao) values ('Restaurante Sal e Brasa', '6.00', 1, utc_timestamp, utc_timestamp);
+insert into restaurante (nome, taxa_frete, cozinha_id, data_criacao, data_atualizacao) values ('Thai Gourmet', 10, 3, utc_timestamp, utc_timestamp);
+insert into restaurante (nome, taxa_frete, cozinha_id, data_criacao, data_atualizacao) values ('Thai Delivery', 9.50, 3, utc_timestamp, utc_timestamp);
+insert into restaurante (nome, taxa_frete, cozinha_id, data_criacao, data_atualizacao) values ('Tuk Tuk Comida Indiana', 15, 4, utc_timestamp, utc_timestamp);
 
 insert into estado (id, nome) values (1, 'Minas Gerais');
 insert into estado (id, nome) values (2, 'São Paulo');

@@ -65,7 +65,7 @@ public class RestauranteController {
 		try {
 			return restauranteAtualOpt.map(restauranteAtual -> {
 
-				BeanUtils.copyProperties(restaurante, restauranteAtual, "id", "formasPagamento", "endereco");
+				BeanUtils.copyProperties(restaurante, restauranteAtual, "id", "formasPagamento", "endereco", "dataCriacao");
 				restauranteAtual = restauranteService.salvar(restauranteAtual);
 				return ResponseEntity.ok(restauranteAtual);
 
