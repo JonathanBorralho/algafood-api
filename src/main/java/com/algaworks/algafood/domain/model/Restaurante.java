@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -28,7 +29,7 @@ public class Restaurante extends BaseEntityAuditable {
 	@Column(name = "taxa_frete")
 	private BigDecimal taxaFrete;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private Cozinha cozinha;
 	
 	@JsonIgnore
