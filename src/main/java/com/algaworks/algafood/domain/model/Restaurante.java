@@ -30,6 +30,7 @@ public class Restaurante extends BaseEntity {
 	@ManyToOne
 	private Cozinha cozinha;
 	
+	@JsonIgnore
 	@Embedded
 	private Endereco endereco;
 	
