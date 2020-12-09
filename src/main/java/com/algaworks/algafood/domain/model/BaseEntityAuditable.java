@@ -10,6 +10,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,11 +20,13 @@ import lombok.Setter;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public abstract class BaseEntityAuditable extends BaseEntity {
-
+	
+	@JsonIgnore
 	@CreatedDate
 	@Column(columnDefinition = "datetime")
 	private LocalDateTime dataCriacao;
-
+	
+	@JsonIgnore
 	@LastModifiedDate
 	@Column(columnDefinition = "datetime")
 	private LocalDateTime dataAtualizacao;
