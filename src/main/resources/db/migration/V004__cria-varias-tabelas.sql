@@ -43,7 +43,7 @@ create table restaurante (
 	nome varchar(80) not null,
 	taxa_frete decimal(10,2) not null,
 	data_atualizacao datetime not null,
-	data_criacao datetime not null,
+	data_cadastro datetime not null,
 	
 	endereco_cidade_id bigint,
 	endereco_cep varchar(9),
@@ -67,7 +67,7 @@ create table usuario (
 	nome varchar(80) not null,
 	email varchar(255) not null,
 	senha varchar(255) not null,
-	data_criacao datetime not null,
+	data_cadastro datetime not null,
     data_atualizacao datetime not null,
 	
 	primary key (id)

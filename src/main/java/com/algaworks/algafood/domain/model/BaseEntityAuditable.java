@@ -24,7 +24,7 @@ public abstract class BaseEntityAuditable extends BaseEntity {
 	@JsonIgnore
 	@CreatedDate
 	@Column(columnDefinition = "datetime")
-	private LocalDateTime dataCriacao;
+	private LocalDateTime dataCadastro;
 	
 	@JsonIgnore
 	@LastModifiedDate
