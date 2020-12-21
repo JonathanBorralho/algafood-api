@@ -1,7 +1,6 @@
 package com.algaworks.algafood.api.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.repository.CidadeRepository;
 import com.algaworks.algafood.domain.service.CidadeService;
@@ -28,7 +26,7 @@ public class CidadeController {
 
 	@Autowired
 	private CidadeRepository cidadeRepository;
-	
+
 	@Autowired
 	private CidadeService cidadeService;
 
@@ -45,28 +43,20 @@ public class CidadeController {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public Cidade adicionar(@RequestBody Cidade cidade) {
-		return cidadeRepository.save(cidade);
+		return cidadeService.salvar(cidade);
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Cidade> atualizar(@PathVariable Long id, @RequestBody Cidade cidade) {
-		final Optional<Cidade> cidadeAtualOpt = cidadeRepository.findById(id);
-
-		return cidadeAtualOpt.map(cidadeAtual -> {
-			BeanUtils.copyProperties(cidade, cidadeAtual, "id");
-			cidadeAtual = cidadeRepository.save(cidadeAtual);
-			return ResponseEntity.ok(cidadeAtual);
-		}).orElseGet(() -> ResponseEntity.notFound().build());
+	public Cidade atualizar(@PathVariable Long id, @RequestBody Cidade cidade) {
+		final Cidade cidadeAtual = cidadeService.buscarOuFalhar(id);
+		BeanUtils.copyProperties(cidade, cidadeAtual, "id");
+		return cidadeRepository.save(cidadeAtual);
 	}
-	
+
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Cidade> remover(@PathVariable Long id) {
-		try {
-			cidadeService.remover(id);
-			return ResponseEntity.noContent().build();
-		} catch (EntidadeNaoEncontradaException e) {
-			return ResponseEntity.notFound().build();
-		}
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void remover(@PathVariable Long id) {
+		cidadeService.remover(id);
 	}
 
 }
