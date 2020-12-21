@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.algaworks.algafood.api.controller.dtos.RestauranteUpdate;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
+import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import com.algaworks.algafood.domain.repository.filter.RestauranteFilter;
@@ -47,12 +48,12 @@ public class RestauranteController {
 	}
 
 	@PostMapping
-	public ResponseEntity<?> adicionar(@RequestBody Restaurante restaurante) {
+	@ResponseStatus(HttpStatus.CREATED)
+	public Restaurante adicionar(@RequestBody Restaurante restaurante) {
 		try {
-			restaurante = restauranteService.salvar(restaurante);
-			return ResponseEntity.status(HttpStatus.CREATED).body(restaurante);
+			return restauranteService.salvar(restaurante);
 		} catch (EntidadeNaoEncontradaException e) {
-			return ResponseEntity.badRequest().body(e.getMessage());
+			throw new NegocioException(e.getMessage());
 		}
 	}
 
@@ -61,7 +62,12 @@ public class RestauranteController {
 		final Restaurante restauranteAtual = restauranteService.buscarOuFalhar(id);
 		final String[] ignoreProperties = { "id", "formasPagamento", "endereco", "dataCadastro", "dataAtualizacao", "produtos" };
 		BeanUtils.copyProperties(restaurante, restauranteAtual, ignoreProperties);
-		return restauranteService.salvar(restauranteAtual);
+
+		try {
+			return restauranteService.salvar(restauranteAtual);
+		} catch (EntidadeNaoEncontradaException e) {
+			throw new NegocioException(e.getMessage());
+		}
 	}
 
 	@PatchMapping("/{id}")
