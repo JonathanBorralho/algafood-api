@@ -1,7 +1,5 @@
 package com.algaworks.algafood.api.exceptionhandler;
 
-import java.time.LocalDateTime;
-
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +17,12 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
 	@ExceptionHandler(EntidadeNaoEncontradaException.class)
 	public ResponseEntity<?> handleEntidadeNaoEncontradaExcetion(Exception ex, WebRequest request) {
-		return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+		HttpStatus status = HttpStatus.NOT_FOUND;
+		ProblemType type = ProblemType.ENTIDADE_NAO_ENCONTRADA;
+		String detail = ex.getMessage();
+		Problem problem = createProblemBuilder(status, type, detail).build();
+
+		return handleExceptionInternal(ex, problem, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
 	}
 
 	@ExceptionHandler(EntidadeEmUsoException.class)
@@ -37,16 +40,24 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 			HttpStatus status, WebRequest request) {
 		
 		if (body == null) {
-			body = Problema.builder()
-					.dataHora(LocalDateTime.now())
-					.mensagem(status.getReasonPhrase()).build();
+			body = Problem.builder()
+					.status(status.value())
+					.detail(status.getReasonPhrase()).build();
 		} else if (body instanceof String) {
-			body = Problema.builder()
-					.dataHora(LocalDateTime.now())
-					.mensagem((String) body).build();
+			body = Problem.builder()
+					.status(status.value())
+					.detail((String) body).build();
 		}
 
 		return super.handleExceptionInternal(ex, body, headers, status, request);
+	}
+	
+	private Problem.ProblemBuilder createProblemBuilder(HttpStatus status, ProblemType type, String detail) {
+		return Problem.builder()
+				.status(status.value())
+				.type(type.getPath())
+				.title(type.getTitle())
+				.detail(detail);
 	}
 
 }
