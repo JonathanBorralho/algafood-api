@@ -50,7 +50,7 @@ public class EstadoController {
 	public Estado atualizar(@PathVariable Long id, @RequestBody Estado estado) {
 		final Estado estadoAtual = estadoService.buscarOuFalhar(id);
 		BeanUtils.copyProperties(estado, estadoAtual, "id");
-		return estadoRepository.save(estadoAtual);
+		return estadoService.salvar(estadoAtual);
 	}
 
 	@DeleteMapping("/{id}")
